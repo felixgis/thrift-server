@@ -1,0 +1,1 @@
+com.probe.rpc.thrift.server.annotation.EnableThriftServer=com.probe.rpc.thrift.server.ThriftServerAutoConfiguration,com.probe.rpc.thrift.server.ThriftServerDiscoveryConfiguration
