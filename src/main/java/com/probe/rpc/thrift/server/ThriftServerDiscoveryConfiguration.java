@@ -28,7 +28,7 @@ import java.util.List;
 @Import(ThriftServerAutoConfiguration.class)
 public class ThriftServerDiscoveryConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ThriftServerDiscoveryConfiguration.class);
+	private static final Logger logger = LoggerFactory.getLogger(ThriftServerDiscoveryConfiguration.class);
 
 	private static final String REGISTRY_URL_TEMPLATE = "http://%s:%d";
 	private static final String HEALTH_CHECK_URL_TEMPLATE = "%s:%d";
@@ -38,20 +38,20 @@ public class ThriftServerDiscoveryConfiguration {
 		ThriftServerDiscoveryProperties discoveryProperties = thriftServerProperties.getDiscovery();
 		String discoveryHostAddress = discoveryProperties.getHost();
 		Integer discoveryPort = discoveryProperties.getPort();
-		LOGGER.info("Service discovery server host {}, port {}", discoveryHostAddress, discoveryPort);
+		logger.info("Service discovery server host {}, port {}", discoveryHostAddress, discoveryPort);
 
 		String serviceName = thriftServerProperties.getServiceId();
 		String serverHostAddress = Inet4Address.getLocalHost().getHostAddress();
 		int servicePort = thriftServerProperties.getPort();
 		String serviceId = String.join(":", serviceName, serverHostAddress, String.valueOf(servicePort));
 
-		LOGGER.info("Service id {}", serviceId);
-		LOGGER.info("Service name {}", serviceName);
-		LOGGER.info("Service host address {}, port {}", serverHostAddress, servicePort);
+		logger.info("Service id {}", serviceId);
+		logger.info("Service name {}", serviceName);
+		logger.info("Service host address {}, port {}", serverHostAddress, servicePort);
 
 		List<String> serviceTags = discoveryProperties.getTags();
 		if (CollectionUtils.isNotEmpty(serviceTags)) {
-			LOGGER.info("Service tags [{}]", String.join(", ", serviceTags));
+			logger.info("Service tags [{}]", String.join(", ", serviceTags));
 		}
 
 		String discoveryUrl = String.format(REGISTRY_URL_TEMPLATE, discoveryHostAddress, discoveryPort);
@@ -81,8 +81,8 @@ public class ThriftServerDiscoveryConfiguration {
 		if (healthCheckEnabled) {
 			Long checkInterval = healthCheckProperties.getCheckInterval();
 			Long checkTimeout = healthCheckProperties.getCheckTimeout();
-			LOGGER.info("Service health check tcp url {}", healthCheckUrl);
-			LOGGER.info("Service health check interval {}s, timeout {}s", checkInterval, checkTimeout);
+			logger.info("Service health check tcp url {}", healthCheckUrl);
+			logger.info("Service health check interval {}s, timeout {}s", checkInterval, checkTimeout);
 			Registration.RegCheck regCheck = ImmutableRegCheck.tcp(healthCheckUrl, checkInterval, checkTimeout);
 			builder.check(regCheck);
 		}
